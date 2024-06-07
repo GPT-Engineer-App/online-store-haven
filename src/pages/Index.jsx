@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
-import { Container, Box, VStack, HStack, Text, Input, Button, Image, IconButton, SimpleGrid, useToast, Select } from "@chakra-ui/react";
+import { Container, Box, VStack, HStack, Text, Input, Button, Image, IconButton, SimpleGrid, useToast } from "@chakra-ui/react";
+import StarRating from "../components/StarRating";
 import { FaShoppingCart, FaPlus, FaTrash } from "react-icons/fa";
 
 const Index = () => {
@@ -87,13 +88,7 @@ const Index = () => {
                   ${product.price}
                 </Text>
                 <HStack>
-                  <Select placeholder="Rate" onChange={(e) => rateProduct(index, e.target.value)} value={ratings[index] || ""}>
-                    <option value="1">1 Star</option>
-                    <option value="2">2 Stars</option>
-                    <option value="3">3 Stars</option>
-                    <option value="4">4 Stars</option>
-                    <option value="5">5 Stars</option>
-                  </Select>
+                  <StarRating rating={ratings[index] || 0} onRate={(rating) => rateProduct(index, rating)} />
                   <Text>{ratings[index] ? `${ratings[index]} Stars` : "No rating yet"}</Text>
                   <IconButton aria-label="Remove Product" icon={<FaTrash />} onClick={() => removeProduct(index)} />
                 </HStack>
