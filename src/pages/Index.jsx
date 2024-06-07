@@ -52,9 +52,11 @@ const Index = () => {
   };
 
   const addComment = (index, comment) => {
-    const newProducts = [...products];
-    newProducts[index].comments.push(comment);
-    setProducts(newProducts);
+    if (comment.trim()) {
+      const newProducts = [...products];
+      newProducts[index].comments.push(comment);
+      setProducts(newProducts);
+    }
   };
 
   return (
