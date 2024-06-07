@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Container, Box, VStack, HStack, Text, Input, Button, Image, IconButton, SimpleGrid, useToast } from "@chakra-ui/react";
+import { Container, Box, VStack, HStack, Text, Input, Button, Image, IconButton, SimpleGrid, useToast, Textarea } from "@chakra-ui/react";
 import { FaShoppingCart, FaPlus, FaTrash } from "react-icons/fa";
 
 const Index = () => {
@@ -7,6 +7,7 @@ const Index = () => {
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productImage, setProductImage] = useState("");
+  const [comments, setComments] = useState({});
   const toast = useToast();
   const fileInputRef = useRef(null);
 
@@ -14,7 +15,7 @@ const Index = () => {
     if (productName && productPrice && productImage) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setProducts([...products, { name: productName, price: productPrice, image: reader.result }]);
+        setProducts([...products, { name: productName, price: productPrice, image: reader.result, comments: [] }]);
         setProductName("");
         setProductPrice("");
         setProductImage("");
@@ -50,6 +51,12 @@ const Index = () => {
     });
   };
 
+  const addComment = (index, comment) => {
+    const newProducts = [...products];
+    newProducts[index].comments.push(comment);
+    setProducts(newProducts);
+  };
+
   return (
     <Container maxW="container.xl" py={10}>
       <VStack spacing={8}>
@@ -75,6 +82,23 @@ const Index = () => {
                   ${product.price}
                 </Text>
                 <IconButton aria-label="Remove Product" icon={<FaTrash />} onClick={() => removeProduct(index)} />
+                <VStack spacing={2} mt={4} width="100%">
+                  <Textarea
+                    placeholder="Add a comment"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        addComment(index, e.target.value);
+                        e.target.value = "";
+                      }
+                    }}
+                  />
+                  {product.comments.map((comment, commentIndex) => (
+                    <Box key={commentIndex} p={2} bg="gray.100" borderRadius="md" width="100%">
+                      <Text>{comment}</Text>
+                    </Box>
+                  ))}
+                </VStack>
               </VStack>
             </Box>
           ))}
