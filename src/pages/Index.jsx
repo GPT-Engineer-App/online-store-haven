@@ -1,6 +1,5 @@
 import { useState, useRef } from "react";
 import { Container, Box, VStack, HStack, Text, Input, Button, Image, IconButton, SimpleGrid, useToast } from "@chakra-ui/react";
-import StarRating from "../components/StarRating";
 import { FaShoppingCart, FaPlus, FaTrash } from "react-icons/fa";
 
 const Index = () => {
@@ -8,7 +7,6 @@ const Index = () => {
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productImage, setProductImage] = useState("");
-  const [ratings, setRatings] = useState({});
   const toast = useToast();
   const fileInputRef = useRef(null);
 
@@ -52,17 +50,6 @@ const Index = () => {
     });
   };
 
-  const rateProduct = (index, rating) => {
-    setRatings({ ...ratings, [index]: rating });
-    toast({
-      title: "Product rated.",
-      description: `You rated the product ${rating} stars.`,
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
-  };
-
   return (
     <Container maxW="container.xl" py={10}>
       <VStack spacing={8}>
@@ -87,11 +74,7 @@ const Index = () => {
                 <Text fontSize="lg" color="gray.500">
                   ${product.price}
                 </Text>
-                <HStack>
-                  <StarRating rating={ratings[index] || 0} onRate={(rating) => rateProduct(index, rating)} />
-                  <Text>{ratings[index] ? `${ratings[index]} Stars` : "No rating yet"}</Text>
-                  <IconButton aria-label="Remove Product" icon={<FaTrash />} onClick={() => removeProduct(index)} />
-                </HStack>
+                <IconButton aria-label="Remove Product" icon={<FaTrash />} onClick={() => removeProduct(index)} />
               </VStack>
             </Box>
           ))}
